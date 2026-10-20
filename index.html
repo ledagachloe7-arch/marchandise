@@ -1,163 +1,109 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vérification de carte professionnelle</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#00A3E0">
+  <title>Consultation — Transport de marchandises | RDC</title>
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f5f8;
-      color: #243b53;
+    :root {
+      --rdc-blue:#00A3E0; --rdc-red:#CE1021; --rdc-yellow:#F7D116;
+      --ink:#2f414e; --muted:#71808a; --line:#dbe3e8; --page:#f5f7f9; --soft-blue:#eef7fa;
     }
-    header {
-      background: #102a43;
-      color: white;
-      padding: 25px 18px;
-      border-bottom: 5px solid #f28c28;
-      text-align: center;
-    }
-    header h1 { font-size: 21px; margin: 0 0 7px; }
-    header p { margin: 0; font-size: 13px; color: #d9e2ec; }
-    .banner {
-      text-align: center;
-      padding: 8px;
-      background: #fff0d9;
-      color: #7c3e00;
-      font-size: 11px;
-      font-weight: bold;
-    }
-    main {
-      max-width: 600px;
-      margin: 28px auto;
-      padding: 0 15px;
-    }
-    .card {
-      background: white;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 6px 25px #102a4314;
-      border: 1px solid #d9e2ec;
-    }
-    .card-header {
-      background: #102a43;
-      color: white;
-      padding: 24px;
-      border-bottom: 4px solid #f28c28;
-    }
-    .card-header small { color: #d9e2ec; }
-    .card-header h2 { margin: 10px 0 4px; font-size: 23px; }
-    .number {
-      color: #f28c28;
-      font-size: 19px;
-      font-weight: bold;
-    }
-    .details { padding: 10px 23px; }
-    .item {
-      padding: 15px 0;
-      border-bottom: 1px solid #d9e2ec;
-    }
-    .item:last-child { border-bottom: none; }
-    .label {
-      display: block;
-      font-size: 12px;
-      color: #627d98;
-      margin-bottom: 5px;
-    }
-    .value {
-      font-size: 15px;
-      font-weight: bold;
-      overflow-wrap: anywhere;
-    }
-    .notice {
-      margin: 5px 20px 20px;
-      padding: 14px;
-      border-radius: 8px;
-      background: #fff0d9;
-      color: #7c3e00;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-    footer {
-      text-align: center;
-      padding: 15px;
-      color: #627d98;
-      font-size: 11px;
-    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--page);color:var(--ink);font:14px/1.55 "Segoe UI",Arial,sans-serif;font-weight:400}
+    .national-colors{height:4px;background:linear-gradient(145deg,transparent 0 38%,var(--rdc-yellow) 38% 41%,var(--rdc-red) 41% 59%,var(--rdc-yellow) 59% 62%,transparent 62%),var(--rdc-blue)}
+    .site-header{background:#fff;border-bottom:1px solid var(--line);padding:19px 16px 18px}
+    .header-inner,main,footer{max-width:850px;margin:0 auto}
+    .brand{display:flex;align-items:center;gap:13px}
+    .flag{width:41px;height:29px;flex:0 0 auto;position:relative;overflow:hidden;border:1px solid #d7e0e6;background:var(--rdc-blue)}
+    .flag:before{content:"";position:absolute;width:135%;height:31%;top:35%;left:-16%;transform:rotate(-35deg);background:var(--rdc-red);border-top:2px solid var(--rdc-yellow);border-bottom:2px solid var(--rdc-yellow)}
+    .flag:after{content:"★";position:absolute;left:4px;top:0;color:var(--rdc-yellow);font-size:12px;line-height:1.1}
+    .country{color:#477084;text-transform:uppercase;font-size:.68rem;font-weight:500;letter-spacing:.08em}
+    h1{margin:3px 0 0;font-size:clamp(1.13rem,3.5vw,1.42rem);font-weight:500;line-height:1.3;color:#263c4a}
+    .subtitle{color:var(--muted);margin-top:4px;font-size:.84rem}
+    main{padding:25px 14px 27px}
+    .card{background:#fff;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+    .card-header{background:#fff;border-top:3px solid var(--rdc-blue);border-bottom:1px solid var(--line);padding:17px 21px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .card-header h2{margin:0;font-size:1rem;font-weight:500}
+    .card-header p{margin:4px 0 0;color:var(--muted);font-size:.82rem}
+    .view-label{color:#527283;background:#f8fbfc;border:1px solid #dbe8ed;border-radius:2px;padding:4px 8px;font-size:.7rem;white-space:nowrap}
+    .content{padding:21px}
+    .registration-row{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:17px}
+    .field-label{display:block;color:var(--muted);font-size:.73rem;margin-bottom:3px}
+    .registration-value{display:inline-block;padding:5px 10px;border:1px solid #bfcbd2;border-radius:2px;color:#263d4b;background:#fff;font-size:1.12rem;font-weight:500;letter-spacing:.07em}
+    .document-ref{color:#667985;font-size:.75rem;white-space:nowrap}
+    .section{padding:16px 0 17px;border-bottom:1px solid var(--line)}
+    .section:last-child{border-bottom:0;padding-bottom:0}
+    h3{margin:0 0 12px;color:#476878;font-size:.77rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px;row-gap:12px}
+    .field{min-width:0}
+    .field .label{display:block;color:var(--muted);font-size:.76rem;margin-bottom:2px}
+    .field .value{display:block;color:#344956;font-weight:500;overflow-wrap:anywhere}
+    .reference{font-size:.86rem;letter-spacing:.01em}
+    .page-note{margin:10px 2px 0;color:#88949c;font-size:.71rem}
+    footer{padding:0 16px 24px;text-align:center;color:#8a959c;font-size:.7rem}
+    @media(max-width:540px){.site-header{padding:16px 14px}.brand{align-items:flex-start}.flag{width:38px;height:27px}.card-header{align-items:flex-start;flex-direction:column;padding:15px 16px}.content{padding:16px}.grid{grid-template-columns:1fr;row-gap:11px}.registration-row{align-items:flex-start;flex-direction:column}}
   </style>
 </head>
 <body>
-
-<header>
-  <h1>RÉPUBLIQUE DÉMOCRATIQUE DU CONGO</h1>
-  <p>Transport routier · Consultation professionnelle</p>
-</header>
-
-<div class="banner">
-  MAQUETTE DE DÉMONSTRATION — NON OFFICIELLE
-</div>
-
-<main>
-  <div class="card">
-
-    <div class="card-header">
-      <small>CARTE PROFESSIONNELLE DE TRANSPORT</small>
-      <h2>MUKENDI EXEMPLE</h2>
-      <div class="number">PRO-KIN-0001</div>
-    </div>
-
-    <div class="details">
-      <div class="item">
-        <span class="label">Nom complet du titulaire</span>
-        <div class="value">MUKENDI EXEMPLE</div>
-      </div>
-
-      <div class="item">
-        <span class="label">Fonction</span>
-        <div class="value">Conducteur / transporteur</div>
-      </div>
-
-      <div class="item">
-        <span class="label">Activité</span>
-        <div class="value">Transport routier</div>
-      </div>
-
-      <div class="item">
-        <span class="label">Catégorie de transport</span>
-        <div class="value">Marchandises</div>
-      </div>
-
-      <div class="item">
-        <span class="label">Zone d’exercice</span>
-        <div class="value">Kinshasa</div>
-      </div>
-
-      <div class="item">
-        <span class="label">Date de délivrance</span>
-        <div class="value">Non renseignée</div>
-      </div>
-
-      <div class="item">
-        <span class="label">Date d’expiration</span>
-        <div class="value">Non renseignée</div>
+  <div class="national-colors" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="header-inner brand">
+      <div class="flag" role="img" aria-label="Drapeau de la République démocratique du Congo"></div>
+      <div>
+        <div class="country">République démocratique du Congo</div>
+        <h1>Consultation du transport de marchandises</h1>
+        <div class="subtitle">Informations liées à l’autorisation de transport — maquette</div>
       </div>
     </div>
-
-    <div class="notice">
-      <strong>Statut : données fictives</strong><br>
-      Cette page est une maquette de présentation. Elle ne vérifie pas
-      l’authenticité d’une carte auprès d’une base de données officielle.
-    </div>
-
-  </div>
-</main>
-
-<footer>
-  Prototype numérique · Informations à valider par l’autorité compétente.
-</footer>
-
+  </header>
+  <main>
+    <article class="card">
+      <div class="card-header">
+        <div>
+          <h2>Fiche de renseignements du transport</h2>
+          <p>Informations d’exemple associées au document consulté</p>
+        </div>
+        <span class="view-label">Consultation</span>
+      </div>
+      <div class="content">
+        <div class="registration-row">
+          <div>
+            <span class="field-label">Numéro de référence</span>
+            <div class="registration-value">MARCH-KIN-0001</div>
+          </div>
+          <div class="document-ref">Réf. maquette : RDC-MARCH-DEMO-001</div>
+        </div>
+        <section class="section">
+          <h3>Identification du transporteur</h3>
+          <div class="grid">
+            <div class="field"><span class="label">Nom / société</span><span class="value">SOCIÉTÉ EXEMPLE</span></div>
+            <div class="field"><span class="label">Numéro de carte professionnelle</span><span class="value">PRO-KIN-0001 (exemple)</span></div>
+            <div class="field"><span class="label">Téléphone</span><span class="value">Non renseigné</span></div>
+            <div class="field"><span class="label">Adresse déclarée</span><span class="value">Kinshasa (exemple)</span></div>
+          </div>
+        </section>
+        <section class="section">
+          <h3>Informations sur le transport</h3>
+          <div class="grid">
+            <div class="field"><span class="label">Type de marchandises</span><span class="value">Marchandises générales (exemple)</span></div>
+            <div class="field"><span class="label">Zone d’activité déclarée</span><span class="value">Kinshasa (exemple)</span></div>
+            <div class="field"><span class="label">Numéro d’immatriculation du véhicule</span><span class="value">1234 AB 01 (exemple)</span></div>
+            <div class="field"><span class="label">Numéro de châssis</span><span class="value">CHASSIS-DEMO-001</span></div>
+          </div>
+        </section>
+        <section class="section">
+          <h3>Références et statut</h3>
+          <div class="grid">
+            <div class="field"><span class="label">Référence du document</span><span class="value reference">RDC-MARCH-DEMO-001</span></div>
+            <div class="field"><span class="label">Statut de la fiche</span><span class="value">Démonstration — non vérifié</span></div>
+          </div>
+        </section>
+      </div>
+    </article>
+    <p class="page-note">Maquette de présentation · les données affichées sont fictives.</p>
+  </main>
+  <footer>Prototype non relié à un registre officiel de l’administration.</footer>
 </body>
 </html>
